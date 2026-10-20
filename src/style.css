@@ -16,13 +16,19 @@ button:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid
 .slide { display: none; flex-direction: column; background: white; padding: 40px 52px 25px; min-height: 590px; border: 1px solid #dde3eb; border-radius: 6px; }
 .slide.is-current, .overview .slide { display: flex; }
 .overview .slide { margin-bottom: 24px; }
-.slide-meta { display: flex; justify-content: space-between; color: #627187; font-size: 13px; letter-spacing: .04em; }
-.slide h1 { margin: 30px 0 28px; font-size: clamp(25px, 3vw, 35px); line-height: 1.25; font-weight: 600; color: #172b47; }
-.slide ul, .slide ol { margin: 0 0 26px; padding-left: 28px; font-size: clamp(18px, 2.15vw, 25px); line-height: 1.55; }
-.slide li { padding-left: 5px; margin-bottom: 15px; overflow-wrap: anywhere; }
+.slide h1 { margin: 0 0 28px; font-size: clamp(25px, 3vw, 35px); line-height: 1.25; font-weight: 600; color: #111; }
+.slide ul, .slide ol { margin: 0 0 20px; padding-left: 28px; font-size: clamp(18px, 2vw, 23px); line-height: 1.4; }
+.slide li { padding-left: 5px; margin-bottom: 12px; overflow-wrap: anywhere; }
+.slide .lead { margin-bottom: 12px; }
+.slide .arrow-list { padding-left: 60px; list-style: none; font-size: clamp(17px, 1.8vw, 21px); }
+.arrow-list li { position: relative; margin-bottom: 7px; }
+.arrow-list li::before { content: '→'; position: absolute; left: -25px; }
+.slide table { border-collapse: collapse; width: 100%; font-size: clamp(15px, 1.6vw, 19px); line-height: 1.35; margin-bottom: 12px; }
+.slide th, .slide td { text-align: left; vertical-align: top; border-bottom: 1px solid #ccc; padding: 6px 10px; overflow-wrap: anywhere; }
+.slide th:first-child { width: 28%; }
+.slide tbody th { font-weight: 500; }
 .sources { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; padding: 14px 0; }
 a { color: #315d9d; }
-.slide-bottom { margin-top: auto; padding-top: 25px; border-top: 1px solid #edf0f4; display: flex; justify-content: space-between; color: #718096; font-size: 12px; }
 .navigation { justify-content: space-between; padding: 16px 0 0; font-size: 14px; }
 .empty, .error { padding: 50px; background: white; border-radius: 6px; }
 .error { margin: 40px auto; max-width: 800px; }
@@ -32,7 +38,7 @@ a { color: #315d9d; }
   .toolbar label { flex-wrap: wrap; }
   .toolbar-actions { flex-wrap: wrap; }
   .slide { min-height: 560px; padding: 24px; }
-  .slide h1 { margin-top: 24px; }
+  .slide .arrow-list { padding-left: 42px; }
   .navigation { gap: 15px; flex-wrap: wrap; }
 }
 @media print {
@@ -43,5 +49,7 @@ a { color: #315d9d; }
   .slide, .overview .slide { display: flex; min-height: 175mm; margin: 0; border: 0; border-radius: 0; padding: 10mm; break-after: page; }
   .slide:last-child { break-after: auto; }
   .slide h1 { font-size: 25pt; }
-  .slide ul, .slide ol { font-size: 18pt; }
+  .slide ul, .slide ol { font-size: 16pt; }
+  .slide .arrow-list { font-size: 14pt; }
+  .slide table { font-size: 12pt; }
 }

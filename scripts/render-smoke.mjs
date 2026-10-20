@@ -17,6 +17,11 @@ try {
   assert.ok(all.includes('Alle meetings'))
   assert.equal((all.match(/<section class="slide/g) || []).length, total)
   assert.equal((all.match(/class="slide is-current"/g) || []).length, total > 0 ? 1 : 0)
+  const slides = meetings.flatMap((meeting) => meeting.slides)
+  assert.equal((all.match(/class="arrow-list"/g) || []).length, slides.filter((slide) => slide.bulletStyle === 'arrow').length)
+  assert.equal((all.match(/class="lead"/g) || []).length, slides.filter((slide) => slide.lead).length)
+  assert.equal((all.match(/<table /g) || []).length, slides.filter((slide) => slide.table).length)
+  assert.equal((all.match(/scope="row"/g) || []).length, slides.reduce((count, slide) => count + (slide.table?.rows.length || 0), 0))
   if (sample) {
     const last = sample.slides.at(-1)
     globalThis.window.location.hash = `#meeting=${sample.date}&slide=${encodeURIComponent(`${sample.date}/${last.id}`)}&view=overview`
@@ -25,7 +30,7 @@ try {
     assert.ok(selected.includes(`Dia ${sample.slides.length} van ${sample.slides.length}`))
     assert.equal((selected.match(/<section class="slide/g) || []).length, sample.slides.length)
   }
-  console.log('React-render geslaagd: totaal, meetingfilter, vaste dialink en overzicht')
+  console.log('React-render geslaagd: totaal, meetingfilter, vaste dialink, overzicht, pijltjes en tabellen')
 } finally {
   delete globalThis.window
   await server.close()

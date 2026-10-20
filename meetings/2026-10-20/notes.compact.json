@@ -6,66 +6,166 @@
   "slides": [
     {
       "id": "intro",
-      "title": "Masterproef: LLM Codegeneratie met FnO-Steps en SHACL",
+      "title": "Afgelopen week",
       "bullets": [
-        "Student: Maxim Milet (02201406)",
-        "Onderwerp: Codegeneratie uit semantische contracten",
-        "Doel: Voortgang bespreken en keuzes afstemmen"
+        "Onderzoek naar FnO, FnO Steps en SHACL"
       ]
     },
     {
       "id": "onderzoeksvraag",
-      "title": "1. De Onderzoeksvraag",
+      "title": "Onderzoeksvraag en deelvragen",
+      "lead": "In welke mate kan een LLM correcte, uitvoerbare implementaties genereren vanuit een FnO Step en zijn input- en outputshapes? Hoe verandert dit bij toenemende transformatiecomplexiteit?",
+      "bulletStyle": "arrow",
       "bullets": [
-        "Kernvraag: Kan een LLM correcte code schrijven vanuit FnO-Steps shapes?",
-        "Effect van complexiteit: Hoe verandert de slaagkans bij moeilijkere transformaties?",
-        "Doel: Een formele benchmark ontwerpen voor datatransformaties",
-        "Aanpak: Vergelijking tussen formele shapes en gewone tekstprompts"
-      ]
-    },
-    {
-      "id": "stand-van-zaken",
-      "title": "2. Stand van Zaken (Sinds Vorige Keer)",
-      "bullets": [
-        "Specificaties bestudeerd: FnO, FnO-Steps en W3C SHACL",
-        "Centrale definitielijst opgesteld",
-        "FnO-Steps: procesmodel (welke stap mag draaien)",
-        "SHACL: datavalidatietaal (voldoet de RDF-data aan de regels)",
-        "Koppeling: steps:hasStateShape verbindt stap aan test-oracle",
-        "Werkend datumvoorbeeld uitgewerkt in Turtle en Python"
+        "Welke rol speelt complexiteit?",
+        "Helpt een formele specificatievorm?",
+        "Welke informatie heeft het model nodig?",
+        "Welke feedback helpt bij herstel?",
+        "Maakt de doeltaal een verschil?",
+        "Hoe vaak is de code uitvoerbaar?",
+        "Hoe vaak voldoet de uitvoer aan de SHACL-shapes?",
+        "Hoe vaak is de transformatie inhoudelijk juist?"
       ]
     },
     {
       "id": "complexiteit",
-      "title": "3. Vier Niveaus van Complexiteit",
+      "title": "Complexiteit",
       "bullets": [
-        "Niveau 1: Syntaxis & regex (bv. datumformaat omzetten)",
-        "Niveau 2: Validatie & structuur (kalenderdagen controleren, velden splitsen)",
-        "Niveau 3: Data cleaning (fouten, ontbrekende en dubbele waarden)",
-        "Niveau 4: Semantiek & lookups (externe codelijsten en URI-mappings)"
+        "Voorlopige ladder op basis van Table Scraps: 1:1 → 1:N → N:1 → N:N (samengesteld)",
+        "Alternatief: meerdere kenmerken per taak"
+      ],
+      "table": {
+        "columns": [
+          "Kenmerk",
+          "Beschrijving"
+        ],
+        "rows": [
+          [
+            "Bewerkingen",
+            "Aantal logische bewerkingen"
+          ],
+          [
+            "Afhankelijkheden",
+            "Tussen velden of records"
+          ],
+          [
+            "Vertakkingen",
+            "Voorwaardelijke regels"
+          ],
+          [
+            "Structuur",
+            "Lijsten, nesting en tabellen"
+          ],
+          [
+            "Kennis",
+            "Benodigde externe kennis"
+          ],
+          [
+            "Randgevallen",
+            "Bijzondere invoer"
+          ],
+          [
+            "Specificatie",
+            "Omvang van shapes en taaktekst"
+          ]
+        ]
+      },
+      "sources": [
+        {
+          "label": "Kasica et al. (2021): categorieën, geen moeilijkheidsvolgorde; N:N is eigen uitbreiding",
+          "url": "https://www.cs.ubc.ca/group/infovis/pubs/2020/table-scraps/table-scraps-preprint.pdf"
+        }
       ]
     },
     {
-      "id": "pipeline",
-      "title": "4. De Zes Fasen van de LLM Pipeline",
-      "ordered": true,
+      "id": "prompt-engineering",
+      "title": "Prompt engineering en generatiebeleid",
       "bullets": [
-        "Promptcontract: FnO-specificatie + SHACL input/output shapes",
-        "Codegeneratie: LLM schrijft pure Python-code",
-        "Executability: Code compileert en draait zonder runtime crash",
-        "Shape Conformance: Output valideert tegen SHACL via pyshacl",
-        "Test-Oracle: Onafhankelijke asserts (behoud van juiste datumwaarde)",
-        "Statistiek: pass@k evaluatie over meerdere pogingen"
+        "Zero-shot: geen voorbeelden",
+        "One-shot: één voorbeeld; few-shot: meerdere voorbeelden",
+        "Shapes versus tekst: dezelfde informatie",
+        "K onafhankelijke pogingen: meten met pass@k",
+        "Herstel: vorige code + foutmelding of testfeedback",
+        "Negatieve voorbeelden en randgevallen toevoegen",
+        "Verborgen eindtests blijven buiten de prompt"
+      ],
+      "sources": [
+        {
+          "label": "Brown et al. (2020): prompting",
+          "url": "https://arxiv.org/abs/2005.14165"
+        },
+        {
+          "label": "Chen et al. (2021): pass@k",
+          "url": "https://arxiv.org/abs/2107.03374"
+        },
+        {
+          "label": "Chen et al. (2023): Self-Debugging",
+          "url": "https://arxiv.org/abs/2304.05128"
+        }
       ]
     },
     {
-      "id": "volgende-stappen",
-      "title": "5. Volgende Stappen",
+      "id": "interactieve-interface",
+      "title": "Paper met interactieve interface",
       "bullets": [
-        "Prototype script bouwen voor de automatische prompt- en validatiecyclus",
-        "Eerste pilot-taken opstellen per moeilijkheidsniveau",
-        "RDF-adapter en foutgedrag bespreken met professoren",
-        "Testcases en prompts bevriezen voor de evaluatie"
+        "Li en Döhmen (2024): Towards Efficient Data Wrangling with LLMs using Code Generation",
+        "Appendix A, figuur 4: voorgestelde gebruikerservaring",
+        "Prompt, gegenereerde code en voorbeeldresultaten",
+        "Gebruiker markeert of corrigeert foute labels",
+        "Nieuwe code na feedback"
+      ],
+      "sources": [
+        {
+          "label": "Li en Döhmen (2024), appendix A, figuur 4",
+          "url": "https://effyli.github.io/waddle_code.pdf"
+        }
+      ]
+    },
+    {
+      "id": "gerelateerd-werk",
+      "title": "Gerelateerd werk",
+      "bullets": [
+        "Transformatiecode: Li en Döhmen; DataMorpher; CoCoNote",
+        "Interactie en feedback: DataSpeck",
+        "Specificaties: Newcomb; Capability-Driven Skill Generation",
+        "Evaluatie: HumanEval; EvalPlus",
+        "Complexiteit van transformaties: Wrangler; Table Scraps; Anka"
+      ],
+      "sources": [
+        {
+          "label": "DataMorpher (2025)",
+          "url": "https://afariha.github.io/papers/DataMorpher_Demo_ICDE_2025.pdf"
+        },
+        {
+          "label": "EvalPlus (2023)",
+          "url": "https://arxiv.org/abs/2305.01210"
+        },
+        {
+          "label": "Anka (preprint, 2025)",
+          "url": "https://arxiv.org/abs/2512.23214"
+        }
+      ]
+    },
+    {
+      "id": "meerwaarde",
+      "title": "Meerwaarde onderzoek",
+      "bullets": [
+        "Een complexiteitsbenchmark",
+        "Inzicht in de specificatievorm",
+        "Inzicht in fouten",
+        "Een werkend prototype"
+      ]
+    },
+    {
+      "id": "vragen-pol",
+      "title": "Vragen voor Pol",
+      "bullets": [
+        "Focus: complexiteitsbenchmark, meerwaarde van FnO/SHACL of prototype?",
+        "Transformaties: welke horen bij de kern?",
+        "Programmeertaal: alleen Python of ook andere talen?",
+        "Bedoelde werking: tekst, voorbeelden of beide?",
+        "Invoer: één record of een verzameling? Welke beperkingen gelden?",
+        "RDF-adapter: vaste omzetting tussen RDF en programmeertypes, of rechtstreeks RDF verwerken?"
       ]
     }
   ]

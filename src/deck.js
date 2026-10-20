@@ -36,14 +36,29 @@ export function validateMeeting(meeting, path = 'meeting') {
   meeting.slides.forEach((slide, i) => {
     const location = `${path}.slides[${i}]`
     object(slide, location)
-    keys(slide, ['id', 'title', 'bullets', 'ordered', 'sources'], location)
+    keys(slide, ['id', 'title', 'lead', 'bullets', 'bulletStyle', 'ordered', 'table', 'sources'], location)
     if (typeof slide.id !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slide.id)) throw new Error(`${location}: ongeldig id`)
     if (ids.has(slide.id)) throw new Error(`${location}: dubbel id ${slide.id}`)
     ids.add(slide.id)
     text(slide.title, `${location}.title`, 120)
     if (!Array.isArray(slide.bullets) || slide.bullets.length < 1 || slide.bullets.length > 8) throw new Error(`${location}: 1 tot 8 bullets verwacht`)
     slide.bullets.forEach((bullet, j) => text(bullet, `${location}.bullets[${j}]`))
+    if (slide.lead !== undefined) text(slide.lead, `${location}.lead`, 400)
+    if (slide.bulletStyle !== undefined && slide.bulletStyle !== 'arrow') throw new Error(`${location}.bulletStyle: arrow verwacht`)
     if (slide.ordered !== undefined && typeof slide.ordered !== 'boolean') throw new Error(`${location}.ordered: boolean verwacht`)
+    if (slide.ordered && slide.bulletStyle === 'arrow') throw new Error(`${location}: kies een genummerde lijst of pijltjes`)
+    if (slide.table !== undefined) {
+      object(slide.table, `${location}.table`)
+      keys(slide.table, ['columns', 'rows'], `${location}.table`)
+      const { columns, rows } = slide.table
+      if (!Array.isArray(columns) || columns.length < 2 || columns.length > 4) throw new Error(`${location}.table: 2 tot 4 kolommen verwacht`)
+      columns.forEach((column, j) => text(column, `${location}.table.columns[${j}]`, 80))
+      if (!Array.isArray(rows) || rows.length < 1 || rows.length > 8) throw new Error(`${location}.table: 1 tot 8 rijen verwacht`)
+      rows.forEach((row, j) => {
+        if (!Array.isArray(row) || row.length !== columns.length) throw new Error(`${location}.table.rows[${j}]: aantal cellen verschilt van kolommen`)
+        row.forEach((cell, k) => text(cell, `${location}.table.rows[${j}][${k}]`, 160))
+      })
+    }
     if (slide.sources !== undefined) {
       if (!Array.isArray(slide.sources) || slide.sources.length > 3) throw new Error(`${location}.sources: maximaal 3 bronnen`)
       slide.sources.forEach((source) => {

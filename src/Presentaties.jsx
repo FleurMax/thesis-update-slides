@@ -18,11 +18,15 @@ function readLocation() {
 function Slide({ slide, active, number, total }) {
   const List = slide.ordered ? 'ol' : 'ul'
   return <section className={`slide${active ? ' is-current' : ''}`} aria-label={`Dia ${number} van ${total}`}>
-    <div className="slide-meta"><span>{slide.meetingDate}</span><span>{slide.status === 'concept' ? 'Concept' : 'Vastgelegd'}</span></div>
     <h1>{slide.title}</h1>
-    <List>{slide.bullets.map((bullet, index) => <li key={index}>{bullet}</li>)}</List>
+    {slide.lead && <ul className="lead"><li>{slide.lead}</li></ul>}
+    <List className={slide.bulletStyle === 'arrow' ? 'arrow-list' : undefined}>{slide.bullets.map((bullet, index) => <li key={index}>{bullet}</li>)}</List>
+    {slide.table && <table aria-label={slide.title}>
+      <thead><tr>{slide.table.columns.map((column, index) => <th scope="col" key={index}>{column}</th>)}</tr></thead>
+      <tbody>{slide.table.rows.map((row, index) => <tr key={index}>{row.map((cell, column) => column === 0
+        ? <th scope="row" key={column}>{cell}</th> : <td key={column}>{cell}</td>)}</tr>)}</tbody>
+    </table>}
     {slide.sources?.length > 0 && <div className="sources">{slide.sources.map((source) => <a key={source.url} href={source.url} target="_blank" rel="noreferrer">{source.label}</a>)}</div>}
-    <div className="slide-bottom"><span>Masterproef · Maxim Milet</span><span>{number} / {total}</span></div>
   </section>
 }
 

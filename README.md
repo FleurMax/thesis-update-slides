@@ -10,7 +10,7 @@ De presentatie staat op [GitHub Pages](https://fleurmax.github.io/thesis-update-
 
 Uitgebreide notities staan lokaal buiten deze repository in `../meeting_notities.md`. Ze horen nooit in een commit. Oude gepubliceerde notities zijn uit de actuele repository verwijderd; eerdere commits zijn niet herschreven.
 
-De bron voor 20 oktober bevat voorlopig de zes bestaande slides. De uitgebreide voorbereiding is nog niet gecomprimeerd. Selecteer die inhoud eerst met Maxim en vervang daarna alleen het compacte bestand van 20 oktober.
+De bron voor 20 oktober bevat acht slides met de door Maxim geselecteerde voorbereiding. De uitgebreide achtergrond blijft alleen in het lokale notitiebestand.
 
 ## Werkwijze
 
@@ -24,6 +24,14 @@ De bron voor 20 oktober bevat voorlopig de zes bestaande slides. De uitgebreide 
 ## JSON-formaat
 
 `schemaVersion` is 1. Een meeting heeft `date`, `title`, `status` en `slides`. Status is `concept` of `vastgelegd`. Elke slide heeft een uniek `id`, een `title` en 1 tot 8 korte `bullets`. `ordered: true` maakt een genummerde lijst. Optionele `sources` bevatten `label` en een `https`-URL. Tekst wordt als gewone tekst getoond.
+
+Optionele velden voor een slide:
+
+- `lead`: één hoofdpunt boven de lijst, maximaal 400 tekens.
+- `bulletStyle: "arrow"`: ingesprongen pijltjes voor de bullets. Niet combineren met `ordered: true`.
+- `table`: `columns` met 2 tot 4 kolomtitels en `rows` met 1 tot 8 rijen. Elke rij bevat evenveel tekstcellen als er kolommen zijn.
+
+De parser weigert onbekende velden, foutieve tabellen en te lange teksten. Gewone slides zonder deze velden blijven hetzelfde werken.
 
 Eén object in `slides` is altijd één dia. De lijstvolgorde blijft behouden. Er is geen AI-samenvatting of automatische herverdeling tijdens het parsen. Meetings worden op datum gesorteerd. Standaard toont de app alle meetings als één presentatie. De keuzelijst filtert op één meeting. De overzichtsknop toont de dia's onder elkaar. De afdrukknop maakt ook een doorlopende PDF mogelijk.
 

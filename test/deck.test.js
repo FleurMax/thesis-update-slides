@@ -44,3 +44,34 @@ test('valideert echte kalenderdatums en staat een leeg concept toe', () => {
   assert.deepEqual(createDeck([empty]), [])
   assert.throws(() => validateMeeting({ ...empty, status: 'vastgelegd' }))
 })
+
+test('behoudt hoofdvraag, pijltjes en tabel zonder herverdeling', () => {
+  const meeting = fixture('2026-10-20')
+  Object.assign(meeting.slides[0], {
+    lead: 'Hoofdvraag', bulletStyle: 'arrow',
+    table: { columns: ['Kenmerk', 'Uitleg'], rows: [['Structuur', 'Lijsten']] },
+  })
+  const before = JSON.stringify(meeting)
+  const [slide] = createDeck([meeting])
+  assert.equal(slide.lead, 'Hoofdvraag')
+  assert.equal(slide.bulletStyle, 'arrow')
+  assert.deepEqual(slide.table, meeting.slides[0].table)
+  assert.equal(JSON.stringify(meeting), before)
+})
+
+test('weigert ongeldige lijststijlen en onregelmatige tabellen', () => {
+  const invalid = [
+    { lead: '' },
+    { bulletStyle: 'unknown' },
+    { bulletStyle: 'arrow', ordered: true },
+    { table: { columns: ['A', 'B'], rows: [['Te weinig']] } },
+    { table: { columns: ['A', 'B'], rows: [['A', 42]] } },
+    { table: { columns: ['A', 'B'], rows: [] } },
+    { table: { columns: ['A', 'B'], rows: [['A', 'B']], privateNotes: 'nee' } },
+  ]
+  for (const fields of invalid) {
+    const meeting = fixture('2026-10-20')
+    Object.assign(meeting.slides[0], fields)
+    assert.throws(() => validateMeeting(meeting))
+  }
+})
