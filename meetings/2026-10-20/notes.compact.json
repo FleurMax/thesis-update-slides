@@ -158,7 +158,7 @@
     },
     {
       "id": "vragen-pol",
-      "title": "Vragen voor Pol",
+      "title": "Vragen",
       "bullets": [
         "Focus: complexiteitsbenchmark, meerwaarde van FnO/SHACL of prototype?",
         "Transformaties: welke horen bij de kern?",
