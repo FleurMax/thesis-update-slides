@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+.env.*
+*.local.*
+**/meeting_notities*.md
+**/sinds_de_laatste_keer.md
+**/meeting-notes*.md
+**/notes*.md
+*.log
+.DS_Store
