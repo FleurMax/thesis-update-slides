@@ -37,6 +37,16 @@ Eén object in `slides` is altijd één dia. De lijstvolgorde blijft behouden. E
 
 ## Lokaal starten
 
+Op Windows: klik met rechts op `Start-Slides.ps1` en kies **Uitvoeren met PowerShell**, of voer dit uit vanuit de repository:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Start-Slides.ps1
+```
+
+Het script werkt ook vanuit een andere werkmap. Het installeert ontbrekende pakketten en opent de slides in de standaardbrowser. Een geopende standaardbrowser gebruikt normaal een nieuw tabblad. De server blijft in de terminal draaien; stop met Ctrl+C. Vite begint op `http://localhost:5173/thesis-update-slides/` en kiest automatisch een vrije poort als die bezet is. Gebruik `-NoBrowser` om alleen de server te starten.
+
+Handmatig starten kan ook:
+
 ```sh
 npm ci
 npm run dev
