@@ -16,7 +16,7 @@
       min-height: 100vh;
     }
     .deck-container {
-      width: 900px;
+      width: 920px;
       height: 560px;
       background: #ffffff;
       border-radius: 12px;
@@ -30,7 +30,7 @@
       display: none;
       padding: 48px 56px;
       flex: 1;
-      animation: fadeIn 0.2s ease-in-out;
+      animation: fadeIn 0.15s ease-in-out;
     }
     .slide.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -42,29 +42,29 @@
       padding-bottom: 12px;
     }
     h2 {
-      font-size: 24px;
+      font-size: 25px;
       color: #1e3a8a;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       border-bottom: 2px solid #e2e8f0;
       padding-bottom: 10px;
     }
     ul, ol {
-      margin-left: 24px;
-      font-size: 18px;
-      line-height: 1.6;
+      margin-left: 28px;
+      font-size: 19px;
+      line-height: 1.65;
       color: #334155;
     }
     li { margin-bottom: 12px; }
-    li ul { font-size: 16px; margin-top: 6px; margin-left: 20px; }
-    .quote-box {
-      background: #f1f5f9;
-      border-left: 4px solid #3b82f6;
-      padding: 14px 18px;
+    li ul { font-size: 17px; margin-top: 6px; margin-left: 22px; }
+    .badge {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-weight: 600;
+      padding: 2px 8px;
       border-radius: 4px;
-      font-size: 16px;
-      color: #1e293b;
-      margin: 16px 0;
-      line-height: 1.5;
+      font-size: 15px;
+      margin-bottom: 12px;
     }
     .footer {
       height: 48px;
@@ -80,7 +80,7 @@
     .nav-buttons button {
       background: #e2e8f0;
       border: none;
-      padding: 6px 12px;
+      padding: 6px 14px;
       border-radius: 4px;
       cursor: pointer;
       font-weight: 600;
@@ -95,46 +95,39 @@
   <!-- Slide 1 -->
   <div class="slide active">
     <h1>Masterproef: LLM Codegeneratie met FnO-Steps en SHACL</h1>
-    <ul style="margin-top: 40px;">
+    <span class="badge">Wekelijkse Voortgangsmeeting</span>
+    <ul style="margin-top: 24px;">
       <li><b>Student:</b> Maxim Milet (02201406)</li>
-      <li><b>Onderwerp:</b> Automatische transformatie-codegeneratie uit semantische contracten</li>
-      <li><b>Doel:</b> Wekelijkse voortgangsmeeting en feedback</li>
+      <li><b>Onderwerp:</b> Codegeneratie uit semantische contracten</li>
+      <li><b>Doel:</b> Voortgang bespreken en keuzes afstemmen</li>
     </ul>
   </div>
 
   <!-- Slide 2 -->
   <div class="slide">
     <h2>1. De Onderzoeksvraag</h2>
-    <div class="quote-box">
-      "In welke mate kan een LLM correcte code genereren uit FnO Step shapes, en hoe verandert de slaagkans naarmate de complexiteit van de transformatie stijgt? Er moet een benchmark worden ontworpen die transformaties indeelt in verschillende graden van complexiteit (eenvoudige regex, kalendervalidatie, multi-veldcombinaties en semantische URI-lookups)."
-    </div>
     <ul>
-      <li>Benchmark bouwen voor semantische datatransformaties.</li>
-      <li>Onderzoeken of harde SHACL-contracten betere code opleveren dan vrije tekst.</li>
+      <li><b>Kernvraag:</b> Kan een LLM correcte code schrijven vanuit FnO-Steps shapes?</li>
+      <li><b>Effect van complexiteit:</b> Hoe verandert de slaagkans bij moeilijkere transformaties?</li>
+      <li><b>Doel:</b> Een formele benchmark ontwerpen voor datatransformaties</li>
+      <li><b>Aanpak:</b> Vergelijking tussen formele shapes en gewone tekstprompts</li>
     </ul>
   </div>
 
   <!-- Slide 3 -->
   <div class="slide">
-    <h2>2. Wat is er gedaan sinds de vorige keer?</h2>
+    <h2>2. Stand van Zaken (Sinds Vorige Keer)</h2>
     <ul>
-      <li><b>Literatuur en standaarden:</b>
+      <li>Specificaties bestudeerd: FnO, FnO-Steps en W3C SHACL</li>
+      <li>Centrale definitielijst opgesteld</li>
+      <li>Scherp onderscheid vastgelegd:
         <ul>
-          <li>Specificaties van FnO, FnO-Steps en SHACL grondig bestudeerd.</li>
-          <li>Definitielijst opgesteld in de thesis-omgeving.</li>
+          <li><b>FnO-Steps:</b> procesmodel (welke stap mag draaien)</li>
+          <li><b>SHACL:</b> datavalidatietaal (voldoet de RDF-data aan de regels)</li>
+          <li><b>Koppeling:</b> <code>steps:hasStateShape</code> verbindt stap aan test-oracle</li>
         </ul>
       </li>
-      <li><b>Scherp onderscheid gemaakt:</b>
-        <ul>
-          <li>FnO-Steps = proces- en workflowmodel (welke stap mag draaien).</li>
-          <li>SHACL = datavalidatietaal (voldoet de RDF-data aan de regels).</li>
-        </ul>
-      </li>
-      <li><b>Praktijkvoorbeelden:</b>
-        <ul>
-          <li>Datumconversie gemodelleerd in Turtle en gekoppeld aan veilige Python-code.</li>
-        </ul>
-      </li>
+      <li>Werkend datumvoorbeeld uitgewerkt in Turtle en Python</li>
     </ul>
   </div>
 
@@ -142,42 +135,34 @@
   <div class="slide">
     <h2>3. Vier Niveaus van Complexiteit</h2>
     <ul>
-      <li><b>Niveau 1: Syntactisch formaat</b>
-        <ul><li>1-op-1 string conversies via regex (bv. DD/MM/YYYY naar YYYY-MM-DD).</li></ul>
-      </li>
-      <li><b>Niveau 2: Structuur & geldigheid</b>
-        <ul><li>Echte kalendercontrole (schrikkeljaren) en velden splitsen/samenvoegen.</li></ul>
-      </li>
-      <li><b>Niveau 3: Data cleaning & anomalieën</b>
-        <ul><li>Detecteren en corrigeren van ontbrekende, foutieve of dubbele data.</li></ul>
-      </li>
-      <li><b>Niveau 4: Semantische mapping & context</b>
-        <ul><li>Betekenisvertaling tussen ontologieën en externe URI-lookups.</li></ul>
-      </li>
+      <li><b>Niveau 1:</b> Syntaxis & regex (bv. datumformaat omzetten)</li>
+      <li><b>Niveau 2:</b> Validatie & structuur (kalenderdagen controleren, velden splitsen)</li>
+      <li><b>Niveau 3:</b> Data cleaning (fouten, ontbrekende en dubbele waarden)</li>
+      <li><b>Niveau 4:</b> Semantiek & lookups (externe codelijsten en URI-mappings)</li>
     </ul>
   </div>
 
   <!-- Slide 5 -->
   <div class="slide">
-    <h2>4. De Zes Fasen van de LLM Evaluatiepipeline</h2>
+    <h2>4. De Zes Fasen van de LLM Pipeline</h2>
     <ol>
-      <li><b>Promptcontract:</b> FnO declaratie + SHACL input- en outputshapes.</li>
-      <li><b>Codegeneratie:</b> LLM schrijft pure Python-code.</li>
-      <li><b>Executability:</b> Foutloos compileren en runtime crashes voorkomen.</li>
-      <li><b>Shape Conformance:</b> Valideren van de RDF-uitvoer via <code>pyshacl</code>.</li>
-      <li><b>Semantisch Test-Oracle:</b> Controleren of de datum en waarden inhoudelijk kloppen.</li>
-      <li><b>Statistische evaluatie:</b> Meten van de slaagkans via <code>pass@k</code>.</li>
+      <li><b>Promptcontract:</b> FnO-specificatie + SHACL input/output shapes</li>
+      <li><b>Codegeneratie:</b> LLM schrijft pure Python-code</li>
+      <li><b>Executability:</b> Code compileert en draait zonder runtime crash</li>
+      <li><b>Shape Conformance:</b> Output valideert tegen SHACL via <code>pyshacl</code></li>
+      <li><b>Test-Oracle:</b> Onafhankelijke asserts (behoud van juiste datumwaarde)</li>
+      <li><b>Statistiek:</b> pass@k evaluatie over meerdere pogingen</li>
     </ol>
   </div>
 
   <!-- Slide 6 -->
   <div class="slide">
-    <h2>5. Volgende Stappen voor Komende Week</h2>
+    <h2>5. Volgende Stappen</h2>
     <ul>
-      <li>Prototype script opzetten voor de automatische prompt- en validatiecyclus.</li>
-      <li>Eerste pilot-taken selecteren en uitwerken per complexiteitsniveau.</li>
-      <li>Interface en RDF-adapter definitief afstemmen met de professoren.</li>
-      <li>Feedback van vandaag verwerken in het plan.</li>
+      <li>Prototype script bouwen voor de automatische prompt- en validatiecyclus</li>
+      <li>Eerste pilot-taken opstellen per moeilijkheidsniveau</li>
+      <li>RDF-adapter en foutgedrag bespreken met professoren</li>
+      <li>Testcases en prompts bevriezen voor de evaluatie</li>
     </ul>
   </div>
 
