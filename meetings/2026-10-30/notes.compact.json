@@ -1,0 +1,209 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-30",
+  "title": "Meeting 30 oktober 2026",
+  "status": "concept",
+  "slides": [
+    {
+      "id": "benchmark-gebouwd",
+      "title": "Wat is gebouwd",
+      "lead": "Een kleine benchmark: een LLM maakt Python-code uit een FnO Step met shapes. De code wordt uitgevoerd en gescoord.",
+      "bullets": [
+        "executable: de code draait zonder crash",
+        "shacl_conform: de uitvoer past in de output shape",
+        "correct: alle tests kloppen, ook het afwijzen van foute invoer"
+      ]
+    },
+    {
+      "id": "taken",
+      "title": "De taken",
+      "bullets": [
+        "Per taak zijn er zichtbare en verborgen tests",
+        "Het model ziet hooguit 2 of 3 voorbeelden"
+      ],
+      "table": {
+        "columns": [
+          "Niveau",
+          "Taak",
+          "Voorbeeld",
+          "Tests"
+        ],
+        "rows": [
+          [
+            "1",
+            "date_reformat",
+            "25/12/2026 wordt 2026-12-25",
+            "18"
+          ],
+          [
+            "1",
+            "celsius_to_fahrenheit",
+            "36.6 wordt 97.9",
+            "13"
+          ],
+          [
+            "2",
+            "split_code",
+            "ABC-2026-0042 wordt ABC, 2026, 42",
+            "10"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "prompt-opbouw",
+      "title": "Opbouw van de prompt",
+      "lead": "Alleen het deel Taak verschilt per conditie.",
+      "ordered": true,
+      "bullets": [
+        "Opdracht: schrijf een Python-functie",
+        "Contract: transform(record) geeft een dict terug, ongeldige invoer geeft ValueError",
+        "Regels: alleen standaardbibliotheek, niet printen",
+        "Taak: tekst, of FnO en SHACL, of alleen shapes",
+        "Voorbeelden: optioneel, in de pilot niet gebruikt"
+      ]
+    },
+    {
+      "id": "prompt-condities",
+      "title": "Prompt per conditie",
+      "bullets": [
+        "fno_shacl = shapes_only plus de regel-zin",
+        "text_only bevat dezelfde informatie als fno_shacl, in gewone tekst"
+      ],
+      "table": {
+        "columns": [
+          "Conditie",
+          "Het model ziet",
+          "Regel erin?"
+        ],
+        "rows": [
+          [
+            "text_only",
+            "Gewone tekst",
+            "Ja"
+          ],
+          [
+            "fno_shacl",
+            "step.ttl met rdfs:comment en shapes",
+            "Ja"
+          ],
+          [
+            "shapes_only",
+            "step.ttl zonder rdfs:comment",
+            "Nee"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "prompt-taken",
+      "title": "Prompt per taak",
+      "bullets": [
+        "Bij shapes_only staat alleen de rechterkolom in de prompt"
+      ],
+      "table": {
+        "columns": [
+          "Taak",
+          "Regel in de tekst",
+          "Wat de shapes zeggen"
+        ],
+        "rows": [
+          [
+            "date_reformat",
+            "DD/MM/YYYY naar YYYY-MM-DD, ongeldige datums afwijzen",
+            "Twee, twee en vier cijfers naar vier, twee en twee cijfers"
+          ],
+          [
+            "celsius_to_fahrenheit",
+            "Afronden op 1 decimaal, onder -273,15 afwijzen",
+            "Minimum -273,15 in, minimum -459,7 uit"
+          ],
+          [
+            "split_code",
+            "Splitsen, getallen maken, serial 0000 afwijzen",
+            "Patroon voor de code, serial minstens 1"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "resultaten",
+      "title": "Resultaten",
+      "lead": "2 goedkope modellen, 3 taken, 3 condities, 3 samples: 54 aanroepen, ongeveer 2 cent.",
+      "bullets": [
+        "Percentage volledig juiste samples",
+        "Pilot is klein en makkelijk: 3 taken, 3 samples"
+      ],
+      "table": {
+        "columns": [
+          "Conditie",
+          "Niveau",
+          "gpt-6-luna",
+          "gpt-5.4-nano"
+        ],
+        "rows": [
+          [
+            "text_only",
+            "1 en 2",
+            "100%",
+            "100%"
+          ],
+          [
+            "fno_shacl",
+            "1 en 2",
+            "100%",
+            "100%"
+          ],
+          [
+            "shapes_only",
+            "1",
+            "0%",
+            "17%"
+          ],
+          [
+            "shapes_only",
+            "2",
+            "100%",
+            "100%"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "waarom-shapes-only-faalt",
+      "title": "Waarom shapes_only faalde",
+      "bullets": [
+        "Datum: de shape zegt niet welk deel de dag is. luna gaf 2026-25-12 voor 25/12/2026",
+        "Datum: nano controleerde niet of de datum bestaat",
+        "Celsius: afronden staat niet in de shapes",
+        "Code splitsen: de regel volgt uit serial minstens 1, dus geen fout",
+        "Shapes beschrijven formaat en grenzen, geen betekenis"
+      ]
+    },
+    {
+      "id": "volgende-stappen",
+      "title": "Volgende stappen",
+      "ordered": true,
+      "bullets": [
+        "Meer en moeilijkere taken, ook niveau 3",
+        "Voorbeelden aan de prompt toevoegen en opnieuw meten",
+        "Een klein lokaal open-weight model proberen",
+        "Fouten per test analyseren"
+      ]
+    },
+    {
+      "id": "vragen-benchmark",
+      "title": "Vragen",
+      "bullets": [
+        "Functie-interface: een dict in en een dict uit, past dat?",
+        "RDF-adapter: nu alleen dict naar graaf voor de SHACL-controle. Later ook andersom?",
+        "Krijgt het model altijd de tekstregel, of ook testen met alleen shapes?",
+        "Ongeldige invoer: afwijzen door de functie of door SHACL vooraf?",
+        "Zit multi-record (niveau 4) in de hoofdevaluatie?",
+        "Volstaat de indeling in 4 niveaus plus labels?",
+        "Alleen Python als doeltaal?",
+        "Welke modellen: ook grotere en open-weight?"
+      ]
+    }
+  ]
+}
